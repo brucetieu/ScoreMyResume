@@ -1,2 +1,2 @@
-# JobSwipr
+# JobMatchr
 Tinder, but for jobs
