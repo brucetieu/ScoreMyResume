@@ -13,7 +13,7 @@ public class User {
     @Column(nullable = false, unique = true, length = 45)  // email cannot be null and is unique
     private String email;
 
-    @Column(nullable = false, length = 64) // 64 for bcrypt
+    @Column(nullable = false, length = 64) // 64 for bcrypt encryted password
     private String password;
 
     @Column(nullable = false, length = 20)
