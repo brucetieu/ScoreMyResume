@@ -11,6 +11,13 @@
         <h1>User Registration Sign Up</h1>
     </div>
 
+    <!-- Display message if error with registration info  -->
+    <div th:if="${param.error}">
+        <div class="alert alert-danger">
+            An email with that name has already been registered! Please provide a new email.
+        </div>
+    </div>
+
     <!-- attribute name of user -->
     <form th:action="@{/process_register}" method="post" th:object="${user}">
         <div class="m-3">

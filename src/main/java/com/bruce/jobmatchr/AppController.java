@@ -2,12 +2,15 @@ package com.bruce.jobmatchr;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Controller
@@ -28,13 +31,20 @@ public class AppController {
     }
 
     @PostMapping("/process_register")
-    public String processRegistration(User user) {
+    public String processRegistration(User user, RedirectAttributes redirAttrs) throws SQLIntegrityConstraintViolationException{
+
         // Save the registered user in the db
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
-        userRepository.save(user);
+        // If a duplicate entry exists in db, flash a message.
+        try {
+            userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            return "redirect:/register?error";
+        }
+
 
         return "registration_success";
     }
