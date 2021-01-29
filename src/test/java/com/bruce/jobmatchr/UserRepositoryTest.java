@@ -39,4 +39,12 @@ public class UserRepositoryTest {
         // Check that the user email which was saved to the database equals the user email we created.
         assertThat(existUser.getEmail()).isEqualTo(user.getEmail());
     }
+
+    @Test
+    public void testFindUserByEmail() {
+        String email = "testemail@email.com";
+
+        User savedUser = userRepository.findByEmail(email);
+        assertThat(savedUser).isNotNull();
+    }
 }
