@@ -54,7 +54,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
-//                .usernameParameter("email")
                 .defaultSuccessUrl("/list_users") // direct after successful auth
                 .permitAll() // Allow user to see the page
                 .and()
