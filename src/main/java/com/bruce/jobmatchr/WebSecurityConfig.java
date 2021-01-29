@@ -52,7 +52,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()  // Only this page is secure
                 .and()
                 .formLogin()
-                .usernameParameter("email")
+                .loginPage("/login")
+                .permitAll()
+//                .usernameParameter("email")
                 .defaultSuccessUrl("/list_users") // direct after successful auth
                 .permitAll() // Allow user to see the page
                 .and()
