@@ -48,4 +48,9 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    // Display current user logged in.
+    public String fullName() {
+        return user.getFirstName() + " " + user.getLastName();
+    }
 }
