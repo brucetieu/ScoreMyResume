@@ -1,10 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thyeleaf.org" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>JobMatchr Home</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
 </head>
 <body>
-$END$
+<div class="container text-center">
+    <div>
+        <h1>User Registration Sign Up</h1>
+    </div>
+
+    <!-- attribute name of user -->
+    <form th:action="@{/process_register}" method="post" th:object="{user}">
+        <div class="m-3">
+            <div class="form-group row">
+                <label class="col-form-label col-4">E-mail</label>
+                <div class="col-8">
+                    <input type="email" class="form-control" th:field="*{email}" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-form-label col-4">Password</label>
+                <div class="col-8">
+                    <input type="password" class="form-control" th:field="*{password}" required minlength="6" maxlength="10">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-form-label col-4">First Name</label>
+                <div class="col-8">
+                    <input type="text" class="form-control" th:field="*{firstName}" required minlength="2" maxlength="20">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-form-label col-4">Last Name</label>
+                <div class="col-8">
+                    <input type="text" class="form-control" th:field="*{lastName}" required minlength="2" maxlength="20">
+                </div>
+            </div>
+
+            <div type="submit" class="btn btn-primary"> Sign Up</div>
+        </div>
+    </form>
+</div>
 </body>
 </html>
