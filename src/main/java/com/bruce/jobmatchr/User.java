@@ -16,8 +16,8 @@ public class User {
     @Column(nullable = false, length = 64) // 64 for bcrypt encryted password
     private String password;
 
-    @Column(name = "reset_password_token")
-    private String reset_password_token;
+//    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
 
     @Column(nullable = false, length = 20)
     private String firstName;
@@ -45,12 +45,12 @@ public class User {
         this.password = password;
     }
 
-    public String getReset_password_token() {
-        return reset_password_token;
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
     }
 
-    public void setReset_password_token(String reset_password_token) {
-        this.reset_password_token = reset_password_token;
+    public void setResetPasswordToken(String reset_password_token) {
+        this.resetPasswordToken = resetPasswordToken;
     }
 
     public void setEmail(String email) {
