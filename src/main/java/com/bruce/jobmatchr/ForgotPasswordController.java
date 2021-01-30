@@ -36,6 +36,9 @@ public class ForgotPasswordController {
             userService.updateResetPasswordToken(token, email);
 
             // generate reset password link based on the token
+            String resetPasswordLink = Utility.getSiteURL(request) + "/reset_password?token=" + token;
+            System.out.println(resetPasswordLink);
+
             // send email
 
         } catch (UserNotFoundException e) {
