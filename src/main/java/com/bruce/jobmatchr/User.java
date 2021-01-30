@@ -16,7 +16,7 @@ public class User {
     @Column(nullable = false, length = 64) // 64 for bcrypt encryted password
     private String password;
 
-//    @Column(name = "reset_password_token")
+    @Column(name = "reset_password_token")
     private String resetPasswordToken;
 
     @Column(nullable = false, length = 20)
@@ -49,7 +49,7 @@ public class User {
         return resetPasswordToken;
     }
 
-    public void setResetPasswordToken(String reset_password_token) {
+    public void setResetPasswordToken(String resetPasswordToken) {
         this.resetPasswordToken = resetPasswordToken;
     }
 
