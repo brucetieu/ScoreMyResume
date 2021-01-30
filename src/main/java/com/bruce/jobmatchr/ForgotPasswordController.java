@@ -1,6 +1,7 @@
 package com.bruce.jobmatchr;
 
 import net.bytebuddy.utility.RandomString;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class ForgotPasswordController {
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping("/forgot_password")
     public String showForgotPasswordForm(Model model) {
 
@@ -20,13 +24,23 @@ public class ForgotPasswordController {
 
     // Create new handler to handle submission of resetting password
     @PostMapping("/forgot_password")
-    public String processForgotPasswordForm(HttpServletRequest request) {
+    public String processForgotPasswordForm(HttpServletRequest request, Model model) {
 
         // Get the email in the email field
         String email = request.getParameter("email");
 
         // Generate a random string of 45 chars to represent the reset password token
         String token = RandomString.make(45);
+
+        try {
+            userService.updateResetPasswordToken(token, email);
+
+            // generate reset password link based on the token
+            // send email
+
+        } catch (UserNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+        }
 
         System.out.println("Email: " + email);
         System.out.println("Token: " + token);
