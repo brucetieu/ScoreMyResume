@@ -2,8 +2,9 @@ package com.bruce.jobmatchr;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-//
+@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
     // Run this query every time we find user by email
@@ -11,5 +12,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
 
     // Find a user by the password token
-    public User findByResetPasswordToken(String token);
+    User findByResetPasswordToken(String token);
 }
