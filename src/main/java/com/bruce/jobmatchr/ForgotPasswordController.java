@@ -110,5 +110,31 @@ public class ForgotPasswordController {
         return "reset_password_form";
     }
 
+    @PostMapping("/reset_password")
+    public String processResetPassword(HttpServletRequest request, Model model) {
+
+        // Get value of token hidden in the reset_password_form
+        String token = request.getParameter("token");
+
+        // Get the value the user entered in the password form in reset_password_form
+        String password = request.getParameter("password");
+
+        // Verify that the token we get is the same as in the db
+        User user = userService.get(token);
+
+        if (user == null) {
+            model.addAttribute("title", "Reset your Password");
+            model.addAttribute("message", "Invalid token");
+        } else {
+
+            // Update the password if token matches
+            userService.updatePassword(user, password);
+            model.addAttribute("message", "You have successfully changed your password!");
+        }
+
+        return "message";
+
+    }
+
 }
 
