@@ -1,10 +1,9 @@
-package com.bruce.jobmatchr;
+package com.bruce.jobmatchr.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 // Implement the loaduser method. Perform authentication for logging in
 public class CustomUserDetailsService implements UserDetailsService {

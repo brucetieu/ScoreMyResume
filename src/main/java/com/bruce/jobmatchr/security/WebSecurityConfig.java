@@ -1,5 +1,6 @@
-package com.bruce.jobmatchr;
+package com.bruce.jobmatchr.security;
 
+import com.bruce.jobmatchr.user.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

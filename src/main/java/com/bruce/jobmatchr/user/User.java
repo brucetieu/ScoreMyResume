@@ -1,4 +1,4 @@
-package com.bruce.jobmatchr;
+package com.bruce.jobmatchr.user;
 
 import javax.persistence.*;
 

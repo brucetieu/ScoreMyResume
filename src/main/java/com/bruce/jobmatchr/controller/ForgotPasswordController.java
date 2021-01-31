@@ -1,5 +1,9 @@
-package com.bruce.jobmatchr;
+package com.bruce.jobmatchr.controller;
 
+import com.bruce.jobmatchr.user.User;
+import com.bruce.jobmatchr.user.UserNotFoundException;
+import com.bruce.jobmatchr.user.UserService;
+import com.bruce.jobmatchr.util.Utility;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 

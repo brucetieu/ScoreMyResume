@@ -1,4 +1,4 @@
-package com.bruce.jobmatchr;
+package com.bruce.jobmatchr.util;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

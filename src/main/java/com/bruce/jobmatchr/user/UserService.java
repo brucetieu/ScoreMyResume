@@ -1,4 +1,4 @@
-package com.bruce.jobmatchr;
+package com.bruce.jobmatchr.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

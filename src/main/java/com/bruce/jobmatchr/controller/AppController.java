@@ -1,6 +1,8 @@
-package com.bruce.jobmatchr;
+package com.bruce.jobmatchr.controller;
 
 
+import com.bruce.jobmatchr.user.User;
+import com.bruce.jobmatchr.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
