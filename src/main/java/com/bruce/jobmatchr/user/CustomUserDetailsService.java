@@ -1,4 +1,4 @@
-package com.bruce.jobmatchr;
+package com.bruce.jobmatchr.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,4 +21,5 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new CustomUserDetails(user);
 
     }
+
 }

@@ -1,5 +1,6 @@
-package com.bruce.jobmatchr;
+package com.bruce.jobmatchr.security;
 
+import com.bruce.jobmatchr.user.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -52,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()  // Only this page is secure
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("/login")  // Override Spring default login page with ours
                 .permitAll()
                 .defaultSuccessUrl("/list_users") // direct after successful auth
                 .permitAll() // Allow user to see the page

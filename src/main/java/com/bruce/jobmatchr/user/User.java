@@ -1,4 +1,4 @@
-package com.bruce.jobmatchr;
+package com.bruce.jobmatchr.user;
 
 import javax.persistence.*;
 
@@ -15,6 +15,10 @@ public class User {
 
     @Column(nullable = false, length = 64) // 64 for bcrypt encryted password
     private String password;
+
+    // Name of this column in database is "reset_password_token"
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
 
     @Column(nullable = false, length = 20)
     private String firstName;
@@ -40,6 +44,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
     }
 
     public void setEmail(String email) {
