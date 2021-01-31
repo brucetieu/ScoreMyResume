@@ -37,6 +37,8 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(newPassword);
 
         user.setPassword(encodedPassword);
+
+        // Set the reset password token to null since the user has just changed their password.
         user.setResetPasswordToken(null);
 
         userRepository.save(user);
