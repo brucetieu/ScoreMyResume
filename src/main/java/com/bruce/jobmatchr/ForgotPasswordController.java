@@ -95,13 +95,17 @@ public class ForgotPasswordController {
     @GetMapping("/reset_password")
     public String showResetPasswordForm(@Param(value= "token") String token, Model model) {
 
+        // Getting the token when user first requested for a password reset.
         User user = userService.get(token);
 
+        // If no user exists with that token, return an error template.
         if (user == null) {
             model.addAttribute("title", "Reset your Password");
             model.addAttribute("message", "Invalid token");
+            return "message";
         }
 
+        // Otherwise, pass the value of the token and return the reset password form
         model.addAttribute("token", token);
         return "reset_password_form";
     }
