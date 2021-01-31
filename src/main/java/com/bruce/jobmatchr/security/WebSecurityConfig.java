@@ -53,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()  // Only this page is secure
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("/login")  // Override Spring default login page with ours
                 .permitAll()
                 .defaultSuccessUrl("/list_users") // direct after successful auth
                 .permitAll() // Allow user to see the page

@@ -29,13 +29,23 @@ public class ForgotPasswordController {
     @Autowired
     private JavaMailSender mailSender;
 
+    /**
+     * Get request, show the forgot password form for the user to enter their email
+     * @param model Java object carrying data
+     * @return The HTML form
+     */
     @RequestMapping("/forgot_password")
     public String showForgotPasswordForm(Model model) {
 
         return "forgot_password_form";
     }
 
-    // Create new handler to handle submission of resetting password
+    /**
+     * Create new handler to handle submission of resetting password
+     * @param request Used to get the value of what's in the HTML fields
+     * @param model Lets us pass in java objects to the HTML template
+     * @return The forgot password form after submitting our email
+     */
     @PostMapping("/forgot_password")
     public String processForgotPasswordForm(HttpServletRequest request, Model model) {
 
@@ -46,18 +56,18 @@ public class ForgotPasswordController {
         String token = RandomString.make(45);
 
         try {
+
+            // Save into the db the reset password token
             userService.updateResetPasswordToken(token, email);
 
             // generate reset password link based on the token
             String resetPasswordLink = Utility.getSiteURL(request) + "/reset_password?token=" + token;
-            System.out.println(resetPasswordLink);
 
-            // send email
+            // send email with link to reset password
             sendEmail(email, resetPasswordLink);
 
             // Pass in a success message to the form
             model.addAttribute("message", "We have sent  reset password link to your email. Please check.");
-
 
         } catch (UserNotFoundException e) {
             model.addAttribute("error", e.getMessage());
@@ -65,13 +75,16 @@ public class ForgotPasswordController {
             model.addAttribute("error", "Error while sending email.");
         }
 
-        System.out.println("Email: " + email);
-        System.out.println("Token: " + token);
-
         return "forgot_password_form";
     }
 
-    // Send the password reset email.
+    /**
+     * Send the password reset email.
+     * @param email Email of user
+     * @param resetPasswordLink reset password link
+     * @throws UnsupportedEncodingException Exception
+     * @throws MessagingException Exception
+     */
     private void sendEmail(String email, String resetPasswordLink) throws UnsupportedEncodingException, MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -94,7 +107,12 @@ public class ForgotPasswordController {
 
     }
 
-    // Show form when user clicks on reset password link so they can change their password
+    /**
+     * Show form when user clicks on reset password link so they can change their password
+     * @param token Reset password token
+     * @param model Pass in java objects to html templates
+     * @return The html form
+     */
     @GetMapping("/reset_password")
     public String showResetPasswordForm(@Param(value= "token") String token, Model model) {
 
@@ -113,6 +131,12 @@ public class ForgotPasswordController {
         return "reset_password_form";
     }
 
+    /**
+     * Handler to perform the actual resetting of password (User clicks on 'Change password' after filling the form)
+     * @param request Lets us get the values of the html form
+     * @param model Lets us pass java objects into the form
+     * @return Back the html form
+     */
     @PostMapping("/reset_password")
     public String processResetPassword(HttpServletRequest request, Model model) {
 

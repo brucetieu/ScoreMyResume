@@ -16,6 +16,7 @@ public class User {
     @Column(nullable = false, length = 64) // 64 for bcrypt encryted password
     private String password;
 
+    // Name of this column in database is "reset_password_token"
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
 
