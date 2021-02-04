@@ -63,4 +63,11 @@ public class AppController {
 
         return "users";
     }
+
+    @GetMapping("/get_started")
+    public String viewGatheringInfo(Model model) {
+
+
+        return "get_started";
+    }
 }
