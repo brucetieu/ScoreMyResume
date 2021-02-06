@@ -13,11 +13,11 @@ public class UserDocument {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "resume_file", nullable = false, unique = true)
+    @Column(length = 512, name = "resume_file", nullable = false, unique = true)
     private String resumeFile;
 
     @Column(name = "size")
-    private String size;
+    private long size;
 
     @Column(name = "upload_time")
     private Date uploadTime;
@@ -31,7 +31,7 @@ public class UserDocument {
     public UserDocument() {
     }
 
-    public UserDocument(Long id, String resumeFile, String size, Date uploadTime, byte[] content) {
+    public UserDocument(Long id, String resumeFile, long size, Date uploadTime, byte[] content) {
         this.id = id;
         this.resumeFile = resumeFile;
         this.size = size;
@@ -55,11 +55,11 @@ public class UserDocument {
         this.resumeFile = resumeFile;
     }
 
-    public String getSize() {
+    public long getSize() {
         return size;
     }
 
-    public void setSize(String size) {
+    public void setSize(long size) {
         this.size = size;
     }
 
