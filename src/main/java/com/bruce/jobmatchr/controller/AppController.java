@@ -1,6 +1,8 @@
 package com.bruce.jobmatchr.controller;
 
 
+import com.bruce.jobmatchr.document.UserDocument;
+import com.bruce.jobmatchr.document.UserDocumentRepository;
 import com.bruce.jobmatchr.user.User;
 import com.bruce.jobmatchr.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +10,24 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.Multipart;
+import java.io.IOException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Date;
 import java.util.List;
 
 @Controller
 public class AppController {
 
+    @Autowired
+    private UserDocumentRepository userDocRepo;
     @Autowired
     private UserRepository userRepository;
 
@@ -66,8 +76,24 @@ public class AppController {
 
     @GetMapping("/get_started")
     public String viewGatheringInfo(Model model) {
-
-
         return "get_started";
+    }
+
+
+    @PostMapping("/matching")
+    public String viewMatchingScreen(@RequestParam("customFile") Model model, MultipartFile multipartFile, RedirectAttributes ra) throws IOException {
+
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        UserDocument userDocument = new UserDocument();
+        userDocument.setResumeFile(fileName);
+        userDocument.setContent(multipartFile.getBytes());
+        userDocument.setSize(multipartFile.getSize());
+        userDocument.setUploadTime(new Date());
+
+        userDocRepo.save(userDocument);
+
+        ra.addAttribute("message", "Generating your results!");
+
+        return "matching";
     }
 }
