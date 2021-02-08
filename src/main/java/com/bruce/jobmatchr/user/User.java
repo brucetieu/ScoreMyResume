@@ -1,5 +1,7 @@
 package com.bruce.jobmatchr.user;
 
+import com.bruce.jobmatchr.document.UserDocument;
+
 import javax.persistence.*;
 
 @Entity
@@ -25,6 +27,22 @@ public class User {
 
     @Column(nullable = false, length = 20)
     private String lastName;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "userdoc_id")
+    private UserDocument userDocument;
+
+    public User(String email, String password, String resetPasswordToken, String firstName, String lastName, UserDocument userDocument) {
+        this.email = email;
+        this.password = password;
+        this.resetPasswordToken = resetPasswordToken;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userDocument = userDocument;
+    }
+
+    public User() {
+    }
 
     public Long getId() {
         return id;
