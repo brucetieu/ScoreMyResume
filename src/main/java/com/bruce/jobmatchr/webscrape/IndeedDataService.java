@@ -4,16 +4,20 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
 
+@Component
 public class GlassdoorScrape {
 
     private final String INDEED = "https://www.indeed.com";
     private final String QUERY_URL = INDEED + "/jobs?q=";
     private final String jobDiv = "div.jobsearch-SerpJobCard";
-    private Set<Job> jobPosting;
+    private Set<Job> jobPosting = new HashSet<>();
 
 
     public Set<Job> scrape(String jobTitle, String jobLocation) {
@@ -22,7 +26,7 @@ public class GlassdoorScrape {
         System.out.println(fullQueryURL);
 
         try {
-            Document document = Jsoup.connect(fullQueryURL).get();
+            Document document = Jsoup.connect(fullQueryURL).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:85.0) Gecko/20100101 Firefox/85.0").get();
 
             Elements pagination = document.select("ul.pagination-list > li > a");
 
@@ -42,10 +46,17 @@ public class GlassdoorScrape {
                     String href = e.select("a.jobtitle").attr("href");
                     String pageAd = INDEED + href;
 
-                    Document doc = Jsoup.connect(pageAd).get();
+                    System.out.println(pageAd);
 
-                    String jobDescription = doc.getElementById("jobDescriptionText").text();
+                    Document doc = Jsoup.connect(pageAd).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:85.0) Gecko/20100101 Firefox/85.0").get();
 
+                    Element element1 = doc.getElementById("jobDescriptionText");
+//                    Element element2 = doc.getElementById("iCIMS_InfoMsg iCIMS_InfoMsg_Job");
+
+                    String jobDescription = "none";
+                    if (element1 != null) {
+                        jobDescription = doc.getElementById("jobDescriptionText").text();
+                    }
                     jobPosting.add(new Job(title, company, location, jobDescription, pageAd, 0.0));
                 }
             }
@@ -56,10 +67,11 @@ public class GlassdoorScrape {
         return jobPosting;
     }
 
+//    public static void main(String[] args) {
+//        GlassdoorScrape gs = new GlassdoorScrape();
+//
+//        gs.scrape("software engineer", "remote");
+//    }
 
-    public static void main (String[] args) {
-        GlassdoorScrape gs = new GlassdoorScrape();
 
-        gs.scrape("software engineer", "denver");
-    }
 }

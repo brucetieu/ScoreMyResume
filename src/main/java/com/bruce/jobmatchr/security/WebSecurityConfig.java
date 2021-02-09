@@ -49,13 +49,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/list_users").authenticated()  // only logged in users can see this
+                .antMatchers("/get_started").authenticated()  // only logged in users can see this
                 .anyRequest().permitAll()  // Only this page is secure
                 .and()
                 .formLogin()
                 .loginPage("/login")  // Override Spring default login page with ours
                 .permitAll()
-                .defaultSuccessUrl("/list_users") // direct after successful auth
+                .defaultSuccessUrl("/") // direct after successful auth
                 .permitAll() // Allow user to see the page
                 .and()
                 .logout().logoutSuccessUrl("/").permitAll(); // DIrect user to / after logged out
