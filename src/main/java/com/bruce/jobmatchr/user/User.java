@@ -91,4 +91,12 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public UserDocument getUserDocument() {
+        return userDocument;
+    }
+
+    public void setUserDocument(UserDocument userDocument) {
+        this.userDocument = userDocument;
+    }
 }
