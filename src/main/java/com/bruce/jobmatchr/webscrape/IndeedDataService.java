@@ -6,13 +6,14 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-@Component
-public class GlassdoorScrape {
+@Service
+public class IndeedDataService {
 
     private final String INDEED = "https://www.indeed.com";
     private final String QUERY_URL = INDEED + "/jobs?q=";
@@ -20,7 +21,11 @@ public class GlassdoorScrape {
     private Set<Job> jobPosting = new HashSet<>();
 
 
-    public Set<Job> scrape(String jobTitle, String jobLocation) {
+    public Set<Job> getJobPosting() {
+        return jobPosting;
+    }
+
+    public void scrape(String jobTitle, String jobLocation) {
 
         String fullQueryURL = QUERY_URL + jobTitle + "&l=" + jobLocation;
         System.out.println(fullQueryURL);
@@ -64,7 +69,7 @@ public class GlassdoorScrape {
             e.printStackTrace();
         }
 
-        return jobPosting;
+//        return jobPosting;
     }
 
 //    public static void main(String[] args) {
