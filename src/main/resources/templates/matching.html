@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+<div>
+    <h4>[[${message}]]</h4>
+</div>
+
+<div>
+    <h1>List of all users</h1>
+</div>
+<div>
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th>Job title</th>
+            <th>Company</th>
+            <th>Location</th>
+            <th>Job </th>
+            <th>Page link</th>
+            <th>Job score</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="job : ${jobs}">
+            <td th:text="${job.jobTitle}">Job title</td>
+            <td th:text="${job.jobCompany}">Company</td>
+            <td th:text="${job.jobLocation}">Location</td>
+            <td th:text="${job.jobDescription}">Job Description</td>
+            <td th:text="${job.jobLink}">Page link</td>
+            <td th:text="${job.jobMatchScore}">Job score</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

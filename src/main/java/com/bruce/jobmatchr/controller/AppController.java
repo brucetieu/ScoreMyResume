@@ -5,6 +5,8 @@ import com.bruce.jobmatchr.document.UserDocument;
 import com.bruce.jobmatchr.document.UserDocumentRepository;
 import com.bruce.jobmatchr.user.User;
 import com.bruce.jobmatchr.user.UserRepository;
+import com.bruce.jobmatchr.webscrape.IndeedDataService;
+import com.bruce.jobmatchr.webscrape.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,11 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.mail.Multipart;
 import java.io.IOException;
+import java.security.Principal;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class AppController {
@@ -30,6 +33,9 @@ public class AppController {
     private UserDocumentRepository userDocRepo;
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private IndeedDataService indeedDataService;
 
     @GetMapping("/")
     public String viewHomepage() {
@@ -80,8 +86,10 @@ public class AppController {
     }
 
 
-    @PostMapping("/matching")
-    public String viewMatchingScreen(@RequestParam("customFile") Model model, MultipartFile multipartFile, RedirectAttributes ra) throws IOException {
+    @PostMapping("/get_started")
+    public String viewMatchingScreen(@RequestParam("customFile") MultipartFile multipartFile, @RequestParam("jobTitle") String jobTitle,
+                                     @RequestParam("jobLocation") String jobLocation,
+                                     Model model, RedirectAttributes ra, Principal principal) throws IOException {
 
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         UserDocument userDocument = new UserDocument();
@@ -90,9 +98,26 @@ public class AppController {
         userDocument.setSize(multipartFile.getSize());
         userDocument.setUploadTime(new Date());
 
-        userDocRepo.save(userDocument);
+//        Set<Job> jobs = indeedDataService.scrape(jobTitle, jobLocation);
+
+//        model.addAttribute("jobs", indeedDataService.getJobPosting());
+        User currentUser = userRepository.findByEmail(principal.getName());
+        currentUser.setUserDocument(userDocument);
+        userDocument.setUser(currentUser);
+
+        userRepository.save(currentUser);
+//        userDocRepo.save(userDocument);
 
         ra.addAttribute("message", "Generating your results!");
+
+        return "get_started";
+    }
+
+    @GetMapping("/matching")
+    public String viewMatches(Model model) {
+
+        indeedDataService.scrape("software engineer", "remote");
+        model.addAttribute("jobs", indeedDataService.getJobPosting());
 
         return "matching";
     }
