@@ -3,6 +3,7 @@ package com.bruce.jobmatchr.controller;
 
 import com.bruce.jobmatchr.document.UserDocument;
 import com.bruce.jobmatchr.document.UserDocumentRepository;
+import com.bruce.jobmatchr.parse.TextDocument;
 import com.bruce.jobmatchr.user.User;
 import com.bruce.jobmatchr.user.UserRepository;
 import com.bruce.jobmatchr.webscrape.IndeedDataService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -88,7 +90,7 @@ public class AppController {
 
     @PostMapping("/get_started")
     public String viewMatchingScreen(@RequestParam("customFile") MultipartFile multipartFile, @RequestParam("jobTitle") String jobTitle,
-                                     @RequestParam("jobLocation") String jobLocation,
+                                     @RequestParam("jobLocation") String jobLocation, @RequestParam("jobDescriptionText") String jobDescriptionText,
                                      Model model, RedirectAttributes ra, Principal principal) throws IOException {
 
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
@@ -98,15 +100,19 @@ public class AppController {
         userDocument.setSize(multipartFile.getSize());
         userDocument.setUploadTime(new Date());
 
-//        Set<Job> jobs = indeedDataService.scrape(jobTitle, jobLocation);
+        TextDocument jobText = new TextDocument(jobDescriptionText);
+        TextDocument resumeText = new TextDocument(new File(fileName));
 
-//        model.addAttribute("jobs", indeedDataService.getJobPosting());
+        double cosineSimilarity = CosineSimilarity.cosineSimilarity(jobText, resumeText);
+
         User currentUser = userRepository.findByEmail(principal.getName());
         currentUser.setUserDocument(userDocument);
         userDocument.setUser(currentUser);
 
         userRepository.save(currentUser);
-//        userDocRepo.save(userDocument);
+
+
+        model.addAttribute("cosineSimilarity", cosineSimilarity);
 
         ra.addAttribute("message", "Generating your results!");
 
