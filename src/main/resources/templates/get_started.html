@@ -42,14 +42,16 @@
             <h1>Let's Create Your Profile</h1>
             <div class="px-2">
                 <form th:action="@{/get_started}" method="post" class="justify-content-center" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="jobs">What jobs do you want?</label>
-                        <input type="text" id="jobs" class="form-control" name="jobTitle" placeholder="Software Engineer" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="location">Location?</label>
-                        <input type="text" id="location" class="form-control" name="jobLocation" placeholder="Denver, CO">
-                    </div>
+<!--                    <div class="form-group">-->
+<!--                        <label for="jobs">What jobs do you want?</label>-->
+<!--                        <input type="text" id="jobs" class="form-control" name="jobTitle" placeholder="Software Engineer" required>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="location">Location?</label>-->
+<!--                        <input type="text" id="location" class="form-control" name="jobLocation" placeholder="Denver, CO">-->
+<!--                    </div>-->
+                    <label for="exampleFormControlTextarea1">Paste the job description</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" name="jobDescriptionText" rows="3"></textarea>
                     <label class="form-label" for="customFile">Upload your resume</label>
 
                     <!-- File upload -->
