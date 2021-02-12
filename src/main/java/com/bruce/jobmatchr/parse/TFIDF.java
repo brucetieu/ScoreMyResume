@@ -20,8 +20,21 @@ public class TFIDF {
         unionOfWords.addAll(this.wordsFromJobDescription);
     }
 
-    public Hashtable<String, Double> getFrequencyByWord() {
+    public Hashtable<String, Double> getFrequencyByWord(List<String> cleanedList) {
+        Hashtable<String, Double> freqUniqueWords = new Hashtable<String, Double>();
 
+        // Set the frequency of all words to be 0.
+        for (String unionVal : unionOfWords) {
+            freqUniqueWords.put(unionVal, 0.0);
+        }
+
+        // Count how many times the word appears in the cleanedList, populate those
+        // counts as values in the hash table.
+        for (String word : cleanedList) {
+            freqUniqueWords.put(word, freqUniqueWords.get(word) + 1);
+        }
+
+        return freqUniqueWords;
     }
 
     public Hashtable<String, Double> computeTF(List<String> listOfWords) {
