@@ -38,7 +38,19 @@ public class TFIDF {
     }
 
     public Hashtable<String, Double> computeTF(List<String> listOfWords) {
+        Hashtable<String, Double> tfHash = new Hashtable<String, Double>();
 
+        int termsInDoc = listOfWords.size();
+
+        // Compute the term frequency of each word.
+        // TF(t) = (Number of times term t appears in a document) / (Total number of
+        // terms in the document).
+        for (String word : getFrequencyByWord(listOfWords).keySet()) {
+            tfHash.put(word, ((double) getFrequencyByWord(listOfWords).get(word) / (double) termsInDoc));
+
+        }
+
+        return tfHash;
     }
 
     public Hashtable<String, Double> computeIDF() {
