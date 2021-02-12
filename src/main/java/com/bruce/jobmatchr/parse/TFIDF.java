@@ -12,6 +12,7 @@ public class TFIDF {
     private List<String> wordsFromResume;
     private List<String> wordsFromJobDescription;
     private Set<String> unionOfWords;
+    Hashtable<String, Double> idfHash = new Hashtable<String, Double>();
 
 
     public TFIDF(File resumeFile, String jobDescriptionText) throws IOException {
@@ -55,7 +56,7 @@ public class TFIDF {
     }
 
     public Hashtable<String, Double> computeIDF(List<String> wordsFromResume, List<String> wordsFromJobDescription) {
-        Hashtable<String, Double> idfHash = new Hashtable<String, Double>();
+
 
         // Create a list of hash tables.
         List<Hashtable<String, Double>> listOfHashes = new ArrayList<Hashtable<String, Double>>();
@@ -98,6 +99,13 @@ public class TFIDF {
     }
 
     public Hashtable<String, Double> computeTFIDF(Hashtable<String, Double> tf) {
+        Hashtable<String, Double> tfidfHash = new Hashtable<String, Double>();
 
+        // tfidf(t, d, D) = tf(t,d) + tf(t,d) * idf(t, D).
+        for (String word : tf.keySet()) {
+            tfidfHash.put(word, tf.get(word) + (tf.get(word) * idfHash.get(word)));
+        }
+
+        return tfidfHash;
     }
 }
