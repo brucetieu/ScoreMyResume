@@ -3,11 +3,9 @@ package com.bruce.jobmatchr.controller;
 
 import com.bruce.jobmatchr.document.UserDocument;
 import com.bruce.jobmatchr.document.UserDocumentRepository;
-import com.bruce.jobmatchr.parse.TextDocument;
 import com.bruce.jobmatchr.user.User;
 import com.bruce.jobmatchr.user.UserRepository;
 import com.bruce.jobmatchr.webscrape.IndeedDataService;
-import com.bruce.jobmatchr.webscrape.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,7 +24,6 @@ import java.security.Principal;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 public class AppController {
@@ -100,10 +97,7 @@ public class AppController {
         userDocument.setSize(multipartFile.getSize());
         userDocument.setUploadTime(new Date());
 
-        TextDocument jobText = new TextDocument(jobDescriptionText);
-        TextDocument resumeText = new TextDocument(new File(fileName));
-
-        double cosineSimilarity = CosineSimilarity.cosineSimilarity(jobText, resumeText);
+        double cosineSimilarity = CosineSimilarity.cosineSimilarity(jobDescriptionText, fileName);
 
         User currentUser = userRepository.findByEmail(principal.getName());
         currentUser.setUserDocument(userDocument);
