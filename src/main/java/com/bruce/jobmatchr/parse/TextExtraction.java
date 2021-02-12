@@ -91,7 +91,7 @@ public class TextExtraction {
      * @param text The text (most likely the job description on the job site).
      * @return A list of words with all stop words removed from the text.
      */
-    public static List<String> parseText(String text) {
+    public static List<String> extractText(String text) {
         return splitText(text);
     }
 
