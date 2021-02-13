@@ -1,8 +1,5 @@
 package com.bruce.jobmatchr.parse;
 
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -10,12 +7,8 @@ import java.util.Set;
 
 public class TFIDF {
 
-    Hashtable<String, Double> idfHash = new Hashtable<String, Double>();
-    Hashtable<String, Double> tfidfHash = new Hashtable<String, Double>();
-
-    public TFIDF() {
-    }
-
+    private Hashtable<String, Double> idfHash;
+    private Hashtable<String, Double> tfidfHash;
 
     public Hashtable<String, Double> getFrequencyByWord(List<String> cleanedList, Set<String> unionOfWords) {
         Hashtable<String, Double> freqUniqueWords = new Hashtable<String, Double>();
@@ -55,6 +48,8 @@ public class TFIDF {
 
         computeIDF(wordsFromResume, wordsFromJobDescription, unionOfWords);
 
+        tfidfHash = new Hashtable<String, Double>();
+
         // tfidf(t, d, D) = tf(t,d) + tf(t,d) * idf(t, D).
         for (String word : tf.keySet()) {
             tfidfHash.put(word, tf.get(word) + (tf.get(word) * idfHash.get(word)));
@@ -67,6 +62,8 @@ public class TFIDF {
 
         // Create a list of hash tables.
         List<Hashtable<String, Double>> listOfHashes = new ArrayList<Hashtable<String, Double>>();
+
+        idfHash = new Hashtable<String, Double>();
 
         // Add the frequency tables of words of each document to the list.
         listOfHashes.add(getFrequencyByWord(wordsFromResume, unionOfWords));
