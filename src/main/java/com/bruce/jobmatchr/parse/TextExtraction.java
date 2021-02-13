@@ -57,7 +57,7 @@ public class TextExtraction {
             // column order.
             stripper.setSortByPosition(true);
 
-            return parseText(stripper.getText(document));
+            return extractText(stripper.getText(document));
         }
 
     }
