@@ -44,39 +44,32 @@ public class CosineSimilarity {
             normA += Math.pow(tfidfResume.get(word), 2);
             normB += Math.pow(tfidfJobDesc.get(word), 2);
         }
-        return normA != 0 || normB != 0 ? dotProduct / (Math.sqrt(normA) * Math.sqrt(normB)) : 0.0;
+
+        return normA != 0.0 || normB != 0.0 ? dotProduct / (Math.sqrt(normA) * Math.sqrt(normB)) : 0.0;
     }
 
     public static void main (String[] args) throws IOException {
-        String job = "Amazon devices impact the world with new technology every day. We are hiring a Software Development Engineer to help us grow. In this role, you will have the opportunity to work across one of the world’s fastest growing and most innovative product portfolios and product lines, including Amazon Echo, Fire TV, Fire Tablets, Kindle E-Readers, and more. The engineering team is revolutionizing the way customers buy those products. Our agile approach allows us to react quickly to market conditions and offer cutting-edge buying options. We operate in a fast-paced and highly experimental fashion, which allows us to bring the most value to our customer.\n" +
-                "As a Software Development Engineer on our team, you will have the opportunity to design the next greatest idea to enhance the customers buying experience. SDEs at Amazon are expected to have industry-leading technical abilities which enable them to significantly improve product quality. We are looking for proactive, creative, flexible candidates who thrive within a collaborative and fun peer environment. This is a fast-paced team where you will make a direct impact on the customer experience and the bottom line of the company. We utilize OO programming languages and the cutting-edge AWS technology stack to build solutions that solve our challenges, ranging from scaling for massive Amazon order volume to supporting customers around the world.\n" +
-                "If you’re a customer-centric, passionate developer who feels strongly about building world-class software, let's talk.\n" +
+        String job = "\n" +
+                "Like to shake things up? We do. eBay hires innovators who can push boundaries and change the world. Design, develop and implement core software systems or applications. Think globally and help eBay be on the top tier with new products, including cloud-based or internet-related tools.\n" +
                 "\n" +
+                "We are looking for a motivated software engineer to build robust and scalable software, help improve our code services and system architecture, participate in brainstorming sessions and supply ideas to our technology, algorithms and products, and work with the product and design teams to understand end-user requirements, formulate use cases, and deliver results. We want the highest levels of technical talent and programming skills, as well as a keen desire to deeply understand our products and services to push our technology forward. You’ll work alongside the best and the brightest engineering talent in the industry. As a core participant of your team, you’ll estimate engineering efforts, prioritize projects, plan implementations, and triage production issues. You need to be dynamic, collaborative, and curious as we build new experiences, improve existing products, and develop distributed systems powering the world’s largest e-commerce websites at a scale few companies can match.\n" +
                 "\n" +
-                "Basic Qualifications\n" +
+                "Note: By applying to this position, your application will be considered for locations we hire for in the United States including, but not limited to: San Jose, CA; Bellevue, WA; Portland, OR; and New York, NY.\n" +
                 "\n" +
-                "    Programming experience with at least one modern language such as Java, C++, or C# including object-oriented design\n" +
-                "    2+ years of non-internship professional software development experience\n" +
-                "    Programming experience with at least one modern language such as Java, C++, or C# including object-oriented design\n" +
-                "    1+ years of experience contributing to the architecture and design (architecture, design patterns, reliability and scaling) of new and current systems\n" +
-                "    Bachelor's degree in Computer Science or another technical field, or commensurate professional experience.\n" +
-                "    Deep understanding of CS fundamentals including data structures, algorithms and complexity analysis\n" +
-                "    Design and architecture knowledge as well as familiarity with object oriented analysis and design patterns (OOA/OOD)\n" +
+                "You are:\n" +
+                "• Analytical. Able to convert abstract concepts into viable products using CS fundamentals\n" +
+                "• Resourceful. Have the ability to do a lot with a little. Be able to aggregate information from various places and build relationships with key partners to get the information you need\n" +
+                "• Data Driven. Able to use data to frame out and solve problems\n" +
                 "\n" +
-                "Preferred Qualifications\n" +
+                "We need:\n" +
+                "• Programming expertise. Be proficient at object oriented programming concepts, design patters, and SDLCA technical connoisseur. Be comfortable with algorithms and data structures, such as dynamic array, linked list, stack, queue, binary search, binary search tree, hash map, depth first search, breadth first search, and merge sort.\n" +
+                "• A go-getter. Seek new opportunities, don’t shy away from challenges, and bring energy and enthusiasm to the office every day.\n" +
                 "\n" +
-                "    2+ years of professional software development experience\n" +
-                "    Bachelor's degree in Computer Science or another technical field, or commensurate professional experience.\n" +
-                "    Proficiency in at least one modern object-oriented programming language such as Java, C++ or C#\n" +
-                "    Deep understanding of CS fundamentals including data structures, algorithms and complexity analysis\n" +
-                "    Design and architecture knowledge as well as familiarity with object oriented analysis and design patterns (OOA/OOD)\n" +
-                "    Experience developing cloud software services and an understanding of design for scalability, performance and reliability\n" +
-                "    Development experience defining, developing and maintaining web service API's\n" +
-                "    Experience in communicating with users, other technical teams, and senior management to collect requirements, describe software product features, technical designs, and product strategy\n" +
-                "    Experience taking a core role in building complex software systems that have been successfully delivered to customers\n" +
-                "    Knowledge of professional software engineering practices & best practices for the full software development life cycle, including coding standards, code reviews, source control management, build processes, testing, and operations\n" +
-                "    Experience with distributed computing and enterprise-wide systems\n" +
-                "    Ability to thrive in fast-paced, dynamic environment";
+                "Basic Qualifications:\n" +
+                "• Must be currently enrolled in a full-time, degree-seeking program and in the process of obtaining a Bachelors or Masters degree in Computer Science or a related field\n" +
+                "• Strong applied experience. You’ve built, broken, and rebuilt software applications\n" +
+                "• Creative thinker who knows how to create real-world products\n" +
+                "• Key skills: Java, Python, distributed systems, cloud-related knowledge";
 
         String file = "/Users/bruce/Documents/Job-Hunt-2020-2021/BT_SWE_Resume_Edit2_2020.pdf";
 
