@@ -3,6 +3,7 @@ package com.bruce.jobmatchr.controller;
 
 import com.bruce.jobmatchr.document.UserDocument;
 import com.bruce.jobmatchr.document.UserDocumentRepository;
+import com.bruce.jobmatchr.parse.CosineSimilarity;
 import com.bruce.jobmatchr.user.User;
 import com.bruce.jobmatchr.user.UserRepository;
 import com.bruce.jobmatchr.webscrape.IndeedDataService;
