@@ -9,20 +9,15 @@ import java.util.List;
 import java.util.Set;
 
 public class TFIDF {
-    private List<String> wordsFromResume;
-    private List<String> wordsFromJobDescription;
-    private Set<String> unionOfWords;
+
     Hashtable<String, Double> idfHash = new Hashtable<String, Double>();
+    Hashtable<String, Double> tfidfHash = new Hashtable<String, Double>();
 
-
-    public TFIDF(File resumeFile, String jobDescriptionText) throws IOException {
-        this.wordsFromResume = TextExtraction.extractPDFText(resumeFile);
-        this.wordsFromJobDescription = TextExtraction.extractText(jobDescriptionText);
-        unionOfWords.addAll(this.wordsFromResume);
-        unionOfWords.addAll(this.wordsFromJobDescription);
+    public TFIDF() {
     }
 
-    public Hashtable<String, Double> getFrequencyByWord(List<String> cleanedList) {
+
+    public Hashtable<String, Double> getFrequencyByWord(List<String> cleanedList, Set<String> unionOfWords) {
         Hashtable<String, Double> freqUniqueWords = new Hashtable<String, Double>();
 
         // Set the frequency of all words to be 0.
@@ -39,7 +34,7 @@ public class TFIDF {
         return freqUniqueWords;
     }
 
-    public Hashtable<String, Double> computeTF(List<String> listOfWords) {
+    public Hashtable<String, Double> computeTF(List<String> listOfWords, Set<String> unionOfWords) {
         Hashtable<String, Double> tfHash = new Hashtable<String, Double>();
 
         int termsInDoc = listOfWords.size();
@@ -47,23 +42,35 @@ public class TFIDF {
         // Compute the term frequency of each word.
         // TF(t) = (Number of times term t appears in a document) / (Total number of
         // terms in the document).
-        for (String word : getFrequencyByWord(listOfWords).keySet()) {
-            tfHash.put(word, ((double) getFrequencyByWord(listOfWords).get(word) / (double) termsInDoc));
+        for (String word : getFrequencyByWord(listOfWords, unionOfWords).keySet()) {
+            tfHash.put(word, ((double) getFrequencyByWord(listOfWords, unionOfWords).get(word) / (double) termsInDoc));
 
         }
 
         return tfHash;
     }
 
-    public Hashtable<String, Double> computeIDF(List<String> wordsFromResume, List<String> wordsFromJobDescription) {
 
+    public Hashtable<String, Double> computeTFIDF(Hashtable<String, Double> tf, List<String> wordsFromResume, List<String> wordsFromJobDescription, Set<String> unionOfWords) {
+
+        computeIDF(wordsFromResume, wordsFromJobDescription, unionOfWords);
+
+        // tfidf(t, d, D) = tf(t,d) + tf(t,d) * idf(t, D).
+        for (String word : tf.keySet()) {
+            tfidfHash.put(word, tf.get(word) + (tf.get(word) * idfHash.get(word)));
+        }
+
+        return tfidfHash;
+    }
+
+    private void computeIDF(List<String> wordsFromResume, List<String> wordsFromJobDescription, Set<String> unionOfWords) {
 
         // Create a list of hash tables.
         List<Hashtable<String, Double>> listOfHashes = new ArrayList<Hashtable<String, Double>>();
 
         // Add the frequency tables of words of each document to the list.
-        listOfHashes.add(getFrequencyByWord(wordsFromResume));
-        listOfHashes.add(getFrequencyByWord(wordsFromJobDescription));
+        listOfHashes.add(getFrequencyByWord(wordsFromResume, unionOfWords));
+        listOfHashes.add(getFrequencyByWord(wordsFromJobDescription, unionOfWords));
 
         int numOfDocuments = 2;
 
@@ -88,24 +95,9 @@ public class TFIDF {
             double idf = Math.log((double) numOfDocuments / numDocWithTermT);
 
             // Replace divide by 0 errors with a 0.
-            if (numDocWithTermT == 0)
-                idfHash.put(word, 0.0);
-            else
-                idfHash.put(word, idf);
-
+            if (numDocWithTermT == 0)  idfHash.put(word, 0.0);
+            else idfHash.put(word, idf);
         }
 
-        return idfHash;
-    }
-
-    public Hashtable<String, Double> computeTFIDF(Hashtable<String, Double> tf) {
-        Hashtable<String, Double> tfidfHash = new Hashtable<String, Double>();
-
-        // tfidf(t, d, D) = tf(t,d) + tf(t,d) * idf(t, D).
-        for (String word : tf.keySet()) {
-            tfidfHash.put(word, tf.get(word) + (tf.get(word) * idfHash.get(word)));
-        }
-
-        return tfidfHash;
     }
 }
