@@ -98,7 +98,8 @@ public class AppController {
         userDocument.setSize(multipartFile.getSize());
         userDocument.setUploadTime(new Date());
 
-        double cosineSimilarity = CosineSimilarity.cosineSimilarity(jobDescriptionText, fileName);
+        CosineSimilarity cosSim = new CosineSimilarity(jobDescriptionText, fileName);
+        double cosSimVal = cosSim.cosineSimilarity();
 
         User currentUser = userRepository.findByEmail(principal.getName());
         currentUser.setUserDocument(userDocument);
@@ -107,7 +108,7 @@ public class AppController {
         userRepository.save(currentUser);
 
 
-        model.addAttribute("cosineSimilarity", cosineSimilarity);
+        model.addAttribute("cosineSimilarity", cosSimVal);
 
         ra.addAttribute("message", "Generating your results!");
 
