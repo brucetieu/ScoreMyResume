@@ -7,6 +7,7 @@ import com.bruce.jobmatchr.parse.CosineSimilarity;
 import com.bruce.jobmatchr.user.User;
 import com.bruce.jobmatchr.user.UserRepository;
 import com.bruce.jobmatchr.webscrape.IndeedDataService;
+import org.apache.pdfbox.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,8 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
@@ -87,19 +91,30 @@ public class AppController {
 
 
     @PostMapping("/get_started")
-    public String viewMatchingScreen(@RequestParam("customFile") MultipartFile multipartFile, @RequestParam("jobTitle") String jobTitle,
-                                     @RequestParam("jobLocation") String jobLocation, @RequestParam("jobDescriptionText") String jobDescriptionText,
+    public String viewMatchingScreen(@RequestParam("customFile") MultipartFile multipartFile,
+                                     @RequestParam("jobDescriptionText") String jobDescriptionText,
                                      Model model, RedirectAttributes ra, Principal principal) throws IOException {
 
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        String fileName = multipartFile.getOriginalFilename();
+
+        // Set a file path so that multipart can get converted to a file
+        Path filepath = Paths.get("/Users/bruce/Documents/JobMatchr", multipartFile.getOriginalFilename());
+
+        // Write the contents of multipart file into the file
+        try (OutputStream os = Files.newOutputStream(filepath)) {
+            os.write(multipartFile.getBytes());
+        }
+
         UserDocument userDocument = new UserDocument();
         userDocument.setResumeFile(fileName);
         userDocument.setContent(multipartFile.getBytes());
         userDocument.setSize(multipartFile.getSize());
         userDocument.setUploadTime(new Date());
 
-        CosineSimilarity cosSim = new CosineSimilarity(jobDescriptionText, fileName);
+        CosineSimilarity cosSim = new CosineSimilarity(jobDescriptionText, filepath.toFile());
         double cosSimVal = cosSim.cosineSimilarity();
+
+        System.out.println(cosSimVal);
 
         User currentUser = userRepository.findByEmail(principal.getName());
         currentUser.setUserDocument(userDocument);
@@ -110,9 +125,10 @@ public class AppController {
 
         model.addAttribute("cosineSimilarity", cosSimVal);
 
-        ra.addAttribute("message", "Generating your results!");
 
-        return "get_started";
+        ra.addFlashAttribute("message", "Generated job match score!");
+        ra.addFlashAttribute("alertClass", "alert-success");
+        return "redirect:/get_started";
     }
 
     @GetMapping("/matching")
