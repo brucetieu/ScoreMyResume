@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -90,10 +91,10 @@ public class AppController {
     }
 
 
-    @PostMapping("/get_started")
+    @PostMapping("/match_results")
     public String viewMatchingScreen(@RequestParam("customFile") MultipartFile multipartFile,
-                                     @RequestParam("jobDescriptionText") String jobDescriptionText,
-                                     Model model, RedirectAttributes ra, Principal principal) throws IOException {
+                                     @RequestParam("jobDescriptionText") String jobDescriptionText, Model model,
+                                     RedirectAttributes ra, Principal principal) throws IOException {
 
         String fileName = multipartFile.getOriginalFilename();
 
@@ -118,25 +119,17 @@ public class AppController {
 
         User currentUser = userRepository.findByEmail(principal.getName());
         currentUser.setUserDocument(userDocument);
+        currentUser.setJobMatchScore(cosSimVal);
         userDocument.setUser(currentUser);
 
         userRepository.save(currentUser);
 
-
-        model.addAttribute("cosineSimilarity", cosSimVal);
-
-
         ra.addFlashAttribute("message", "Generated job match score!");
         ra.addFlashAttribute("alertClass", "alert-success");
-        return "redirect:/get_started";
+
+        model.addAttribute("cosineSimilarity", cosSimVal);
+        return "match_results";
+
     }
 
-    @GetMapping("/matching")
-    public String viewMatches(Model model) {
-
-        indeedDataService.scrape("software engineer", "remote");
-        model.addAttribute("jobs", indeedDataService.getJobPosting());
-
-        return "matching";
-    }
 }
