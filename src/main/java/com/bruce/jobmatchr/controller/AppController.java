@@ -3,6 +3,7 @@ package com.bruce.jobmatchr.controller;
 
 import com.bruce.jobmatchr.document.UserDocument;
 import com.bruce.jobmatchr.document.UserDocumentRepository;
+import com.bruce.jobmatchr.parse.CosineSimilarity;
 import com.bruce.jobmatchr.user.User;
 import com.bruce.jobmatchr.user.UserRepository;
 import com.bruce.jobmatchr.webscrape.IndeedDataService;
@@ -97,7 +98,8 @@ public class AppController {
         userDocument.setSize(multipartFile.getSize());
         userDocument.setUploadTime(new Date());
 
-        double cosineSimilarity = CosineSimilarity.cosineSimilarity(jobDescriptionText, fileName);
+        CosineSimilarity cosSim = new CosineSimilarity(jobDescriptionText, fileName);
+        double cosSimVal = cosSim.cosineSimilarity();
 
         User currentUser = userRepository.findByEmail(principal.getName());
         currentUser.setUserDocument(userDocument);
@@ -106,7 +108,7 @@ public class AppController {
         userRepository.save(currentUser);
 
 
-        model.addAttribute("cosineSimilarity", cosineSimilarity);
+        model.addAttribute("cosineSimilarity", cosSimVal);
 
         ra.addAttribute("message", "Generating your results!");
 
