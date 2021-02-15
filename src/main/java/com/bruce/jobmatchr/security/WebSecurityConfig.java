@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/get_started").authenticated()  // only logged in users can see this
+                .antMatchers("/calculate").authenticated()  // only logged in users can see this
                 .anyRequest().permitAll()  // Only this page is secure
                 .and()
                 .formLogin()

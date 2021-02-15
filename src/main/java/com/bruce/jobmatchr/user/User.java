@@ -28,16 +28,21 @@ public class User {
     @Column(nullable = false, length = 20)
     private String lastName;
 
+    @Column(nullable = false)
+    private double jobMatchScore;
+
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "userdoc_id")
     private UserDocument userDocument;
 
-    public User(String email, String password, String resetPasswordToken, String firstName, String lastName, UserDocument userDocument) {
+    public User(String email, String password, String resetPasswordToken, String firstName, String lastName, UserDocument userDocument, double jobMatchScore) {
         this.email = email;
         this.password = password;
         this.resetPasswordToken = resetPasswordToken;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.jobMatchScore = jobMatchScore;
         this.userDocument = userDocument;
     }
 
@@ -98,5 +103,13 @@ public class User {
 
     public void setUserDocument(UserDocument userDocument) {
         this.userDocument = userDocument;
+    }
+
+    public double getJobMatchScore() {
+        return jobMatchScore;
+    }
+
+    public void setJobMatchScore(double jobMatchScore) {
+        this.jobMatchScore = jobMatchScore;
     }
 }
