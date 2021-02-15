@@ -1,15 +1,7 @@
 package com.bruce.jobmatchr.controller;
 
 
-import com.bruce.jobmatchr.document.UserDocument;
-import com.bruce.jobmatchr.document.UserDocumentRepository;
 import com.bruce.jobmatchr.parse.CosineSimilarity;
-import com.bruce.jobmatchr.user.User;
-import com.bruce.jobmatchr.user.UserRepository;
-import com.bruce.jobmatchr.webscrape.IndeedDataService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,75 +14,21 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.Principal;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.Date;
-import java.util.List;
 
 @Controller
 public class AppController {
 
-    @Autowired
-    private UserDocumentRepository userDocRepo;
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private IndeedDataService indeedDataService;
 
     @GetMapping("/")
     public String viewHomepage() {
         return "index";
     }
 
-    @GetMapping("/register")
-    public String showSignUpForm(Model model) {
-        model.addAttribute("user", new User());
-        return "signup_form";
-    }
-
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
-
-    @PostMapping("/process_register")
-    public String processRegistration(User user, RedirectAttributes redirAttrs) throws SQLIntegrityConstraintViolationException{
-
-        // Save the registered user in the db
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encodedPassword = encoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-
-        // If a duplicate entry exists in db, flash a message.
-        try {
-            userRepository.save(user);
-        } catch (DataIntegrityViolationException e) {
-            return "redirect:/register?error";
-        }
-
-
-        return "registration_success";
-    }
-
-    @GetMapping("/list_users")
-    public String viewUsersList(Model model) {
-        List<User> listUsers = userRepository.findAll();
-        model.addAttribute("listUsers", listUsers);
-
-        return "users";
-    }
-
-    @GetMapping("/calculate")
-    public String viewGatheringInfo(Model model) {
-        return "calculate";
-    }
-
 
     @PostMapping("/match_results")
     public String viewMatchingScreen(@RequestParam("customFile") MultipartFile multipartFile,
                                      @RequestParam("jobDescriptionText") String jobDescriptionText, Model model,
-                                     RedirectAttributes ra, Principal principal) throws IOException {
+                                     RedirectAttributes ra) throws IOException {
 
         String fileName = multipartFile.getOriginalFilename();
 
@@ -102,23 +40,9 @@ public class AppController {
             os.write(multipartFile.getBytes());
         }
 
-        UserDocument userDocument = new UserDocument();
-        userDocument.setResumeFile(fileName);
-        userDocument.setContent(multipartFile.getBytes());
-        userDocument.setSize(multipartFile.getSize());
-        userDocument.setUploadTime(new Date());
 
         CosineSimilarity cosSim = new CosineSimilarity(jobDescriptionText, filepath.toFile());
         double cosSimVal = cosSim.cosineSimilarity();
-
-        System.out.println(cosSimVal);
-
-        User currentUser = userRepository.findByEmail(principal.getName());
-        currentUser.setUserDocument(userDocument);
-        currentUser.setJobMatchScore(cosSimVal);
-        userDocument.setUser(currentUser);
-
-        userRepository.save(currentUser);
 
         ra.addFlashAttribute("message", "Generated job match score!");
         ra.addFlashAttribute("alertClass", "alert-success");
