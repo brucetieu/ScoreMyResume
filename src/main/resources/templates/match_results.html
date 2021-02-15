@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,9 +8,33 @@
 </head>
 <body>
 
-<div class="container">
-    <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"/>
-    <div>Your job match score: <span th:text="${cosineSimilarity * 100}"></span></div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">JobMatchr</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/register}">Registration <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/login}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/calculate}">Calculate Job Match Score</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="jumbotron">
+    <h1 class="display-4">Your job match score: <span th:text="${#numbers.formatDecimal(cosineSimilarity * 100, 0, 'COMMA', 2, 'POINT')}"></span></h1>
+
+    <p class="lead">
+        <a class="btn btn-primary btn-lg" th:href="@{/calculate}" role="button">Paste another job</a>
+    </p>
 </div>
 
 </body>
