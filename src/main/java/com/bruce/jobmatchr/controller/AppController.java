@@ -33,10 +33,10 @@ public class AppController {
         String fileName = multipartFile.getOriginalFilename();
 
         // Set a file path so that multipart can get converted to a file
-        Path filepath = Paths.get("/Users/bruce/Documents/JobMatchr", multipartFile.getOriginalFilename());
+        Path filepath = Paths.get("./", multipartFile.getOriginalFilename());
 
         // Write the contents of multipart file into the file
-        try (OutputStream os = Files.newOutputStream(filepath)) {
+        try (OutputStream os = Files.newOutputStream(filepath.toAbsolutePath())) {
             os.write(multipartFile.getBytes());
         }
 
