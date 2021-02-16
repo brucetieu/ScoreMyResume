@@ -27,8 +27,7 @@ public class AppController {
 
     @PostMapping("/match_results")
     public String viewMatchingScreen(@RequestParam("customFile") MultipartFile multipartFile,
-                                     @RequestParam("jobDescriptionText") String jobDescriptionText, Model model,
-                                     RedirectAttributes ra) throws IOException {
+                                     @RequestParam("jobDescriptionText") String jobDescriptionText, Model model) throws IOException {
 
         String fileName = multipartFile.getOriginalFilename();
 
@@ -43,9 +42,6 @@ public class AppController {
 
         CosineSimilarity cosSim = new CosineSimilarity(jobDescriptionText, filepath.toFile());
         double cosSimVal = cosSim.cosineSimilarity();
-
-        ra.addFlashAttribute("message", "Generated job match score!");
-        ra.addFlashAttribute("alertClass", "alert-success");
 
         model.addAttribute("cosineSimilarity", cosSimVal);
         return "match_results";
