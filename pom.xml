@@ -12,10 +12,14 @@
     <artifactId>jobmatchr</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>jobmatchr</name>
-    <description>Tinder, but for jobs</description>
+    <description>Score my resume</description>
+<!--    <properties>-->
+<!--        <java.version>11</java.version>-->
+<!--    </properties>-->
     <properties>
-        <java.version>11</java.version>
+        <java.version>1.8</java.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
